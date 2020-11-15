@@ -26,4 +26,4 @@ defmodule Prime do
 	
 end
 
-Prime.sieve(10) |> IO.inspect
+Prime.sieve(100000) |> length |> IO.inspect
