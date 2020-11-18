@@ -34,6 +34,18 @@ impl Morse{
 
 	}
 
+	pub fn new_encoded(msg: &str) -> Self {
+
+		Morse{
+			
+			plain: String::new(),
+			encoded:  msg.to_string()
+		
+		}
+
+
+	}
+
 	pub fn plain(&self) -> &str {
 		&self.plain
 	}
@@ -57,6 +69,25 @@ impl Morse{
 
 		Ok(())
 		
+	}
+
+	pub fn decode(&mut self) -> Result<() , ()>{
+		
+		let p = Parser::new();
+
+		let v = self.encoded.split(" ").collect::<Vec<&str>>();
+
+		for i in v {
+
+			match p.search_plain(i) {
+
+				Some(value) =>  self.plain.push_str(format!("{}",value).as_str()),
+				_ => continue,
+			}
+
+		}
+
+		Ok(())
 	}
 
 

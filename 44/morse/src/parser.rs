@@ -62,6 +62,17 @@ impl Parser{
 
 	}	
 
+	pub fn search_plain(&self , c:  &str) -> Option<&String>{
+
+		let mut src = c.to_string();
+
+		src.make_ascii_uppercase();
+
+		self.plain.get(&src)
+
+
+	}
+
 	pub fn search(&self , c: char) -> Option<&String> { 
 
 		let mut src = c.to_string();
