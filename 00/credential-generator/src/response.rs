@@ -1,4 +1,8 @@
 use serde::{Serialize , Deserialize};
+use std::fs::OpenOptions;
+use std::fs::File;
+use std::io::BufReader;
+use std::io::Read;
 
 #[derive(Debug , Serialize , Deserialize)]
 pub struct Response{
@@ -25,4 +29,17 @@ pub struct Response{
 	pub peso: String,
 	pub tipo_sanguineo: String,
 	pub cor: String
+}
+
+#[test]
+
+fn file(){
+
+	let mut file = File::open("ceps.txt").unwrap();
+
+  let mut buf_reader = BufReader::new(file);
+  let mut contents = String::new();
+  buf_reader.read_to_string(&mut contents).unwrap();
+
+	println!("{:?}",contents.split("\n"));
 }
