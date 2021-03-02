@@ -11,10 +11,19 @@ async fn generator()-> Result<HttpResponse, Error> {
 
 }
 
+async fn request_test() -> String {
+	let body = reqwest::get("http://cep.republicavirtual.com.br/web_cep.php?formato=xml&cep=99714413").await.unwrap()
+	    .text().await.unwrap();
+
+	body
+}
+
 #[actix_web::main]
 async fn main()  -> std::io::Result<()> {
 
 	println!("Listening on port 8080");
+
+//	let result : String = request_test().await;
 
 	HttpServer::new(move ||  {
 

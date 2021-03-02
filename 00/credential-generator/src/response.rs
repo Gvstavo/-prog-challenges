@@ -3,6 +3,7 @@ use std::fs::OpenOptions;
 use std::fs::File;
 use std::io::BufReader;
 use std::io::Read;
+use reqwest::*;
 
 #[derive(Debug , Serialize , Deserialize)]
 pub struct Response{
@@ -42,5 +43,6 @@ fn file(){
   let mut contents = String::new();
   buf_reader.read_to_string(&mut contents).unwrap();
 
-	println!("{:?}",contents.split("\n").map(|x| x.get(..8)).collect::<Vec<Option<&str>>>());
+	//println!("{:?}",contents.split("\n").map(|x| x.get(..8)).collect::<Vec<Option<&str>>>());
 }
+
