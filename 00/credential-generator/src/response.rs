@@ -12,24 +12,15 @@ use chrono::{Duration, Utc};
 
 #[derive(Debug , Serialize , Deserialize)]
 pub struct Response{
-	// dados pessoais
-//	pub nome: String, 
+	pub nome: String, 
 	pub idade: i64,
 	pub cpf: String,
 	pub data_nasc: String,
-	// filiacao
- 	//pub mae: String,
-	//pub pai: String,
-	// endereço
 	pub cep: String,
 	pub endereco: String,
 	pub bairro: String,
 	pub cidade: String,
 	pub estado: String,
-	// telefpones
-//	pub telefone_fixo: String,
-//	pub celular: String,
-	// caracteristicas fisicas
 	pub altura: f64,
 	pub peso: f64,
 	pub tipo_sanguineo: String,
@@ -75,19 +66,41 @@ pub fn cpf() -> String {
 
 }
 
-// 	pub idade: u32,
-// 	pub cpf: String,
-// 	pub data_nasc: String,
-// 	pub cep: String,
-// 	pub endereco: String,
-// 	pub numero: u32,
-// 	pub bairro: i32,
-// 	pub cidade: String,
-// 	pub estado: String,
-// 	pub altura: f64,
-// 	pub peso: String,
-// 	pub tipo_sanguineo: String,
-// }
+fn nome() -> String{
+
+	let mut rng = thread_rng();
+	
+	let mut file = File::open("nomes.txt").unwrap();
+
+	let mut buf_reader = BufReader::new(file);
+  	
+  let mut contents = String::new();
+
+  buf_reader.read_to_string(&mut contents).unwrap();  
+
+  let n: usize = rng.gen_range(0..2823);
+
+	contents.split("\n").collect::<Vec<&str>>().get(n).unwrap().to_string()
+
+}
+
+pub fn sobrenome() -> String{
+
+	let mut rng = thread_rng();
+	
+	let mut file = File::open("sobrenomes.txt").unwrap();
+
+	let mut buf_reader = BufReader::new(file);
+  	
+  let mut contents = String::new();
+
+  buf_reader.read_to_string(&mut contents).unwrap();  
+
+  let n: usize = rng.gen_range(0..254);
+
+	contents.split("\n").collect::<Vec<&str>>().get(n).unwrap().to_string()
+
+}
 
 impl Response{
 
@@ -125,6 +138,7 @@ impl Response{
         .json::<HashMap<String, String>>().unwrap();
 
     Response{
+    	nome: format!("{} {}", nome(), sobrenome()),
     	idade : idade,
     	cpf: cpf(),
     	data_nasc: nascimento.to_string(),
@@ -137,52 +151,11 @@ impl Response{
     	peso: peso,
     	tipo_sanguineo: sang.get(u).unwrap().to_string()
 
-
     }
 
 	}
 }
 
-#[test]
-fn cpf_test(){
-
-	let mut rng = thread_rng();
-
-	let mut count = 1;
-
-	let mut v1 = 0;
-	let mut v2 = 0;
-
-
-	let mut v : Vec<u32>= (0..=8).map(|_x| rng.gen_range(0..=9)).collect();
-
-	for i in &v {
-	
-		v1 = v1 + i * count;
-		count +=1;
-
-	}
-
-	v1 = (v1 % 11) % 10;
-
-	count = 0;
-
-	v.push(v1);
-
-	for i in &v {
-	
-		v2 = v2 + i * count;
-
-		count +=1;
-
-	}
-
-	v2 = (v2 % 11) % 10;
-
-	v.push(v2);
-	println!("{:?}", v.iter().fold(String::new(), |acc, x| format!("{}{}",acc,x)));
-
-}
 
 #[test]
 fn pessoa(){
