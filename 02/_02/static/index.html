@@ -4,13 +4,65 @@
 	<title>02</title>
 	<script type="text/javascript">
 		
-		function aqui(){
-			alert("^");
+		function converte(){
+			
+			var x1 = document.getElementById("x1");
+
+			var to = document.getElementById("to");
+			var from = document.getElementById("from");
+
+			var ret = document.getElementById("ret");
+
+			var v = parseFloat(x1.value);
+
+			var data = {x: isNaN(v)? 0.0 : v, to: to.value , from: from.value};
+			
+			console.log(data);	
+
+		 	var myInit =  {
+     		method: "POST",
+     		body: JSON.stringify(data),
+     		headers: {
+       		'Content-Type': 'application/json'
+     		},
+     		body: JSON.stringify(data)
+   		}
+
+   		console.log(myInit);
+			var myRequest = new Request("/to",myInit);
+
+			fetch(myRequest)
+			.then((response) => response.json())
+			.then((response) => ret.setAttribute("value",response.value))
 		}
 
 	</script>
 </head>
 <body>
-	<button onclick= "aqui()">|</button>
+
+	<form id="form" method="POST" >
+  	
+  	<div>
+  		<label for="x1">Temperatura:</label> <input type="number" onkeyup="converte()" name="x1" id="x1">
+
+			<select name="to" id="to" onchange="converte()">
+			  <option value="c">Celsius</option>
+			  <option value="f">Fahrenheit</option>
+			  <option value="k">Kelvin</option>
+			</select>
+  	</div>
+  	<br>
+  	 <div>
+  		<label for="ret">Resultado:</label> <input type="text" name="ret" id="ret" value="" readonly="">
+
+			<select name="from" id="from" onchange="converte()">
+			  <option value="c">Celsius</option>
+			  <option value="f">Fahrenheit</option>
+			  <option value="k">Kelvin</option>
+			</select>
+  	</div>
+
+  
+  </form>
 </body>
 </html>
