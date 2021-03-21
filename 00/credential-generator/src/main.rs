@@ -2,7 +2,7 @@
 extern crate actix_web;
 
 use actix_files::Files;
-use actix_web::{http, web, App ,  HttpServer, Responder, HttpResponse, Error};
+use actix_web::{http, web, App ,  HttpServer, Responder, HttpResponse, Error};	
 
 mod response;
 use response::Response;
@@ -12,14 +12,6 @@ use response::Response;
 async fn generator()-> impl Responder {
 	HttpResponse::Ok().json(Response::new())
 }
-
-// #[get("/")]
-// async fn index() -> impl Responder {	
-
-// 	HttpResponse::build(http::StatusCode::OK)
-//         .content_type("text/html; charset=utf-8")
-//         .body(include_str!("../static/index.html"))
-// }
 
 #[actix_web::main]
 async fn main()  -> std::io::Result<()> {
