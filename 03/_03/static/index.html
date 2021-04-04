@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>|</title>
+	<script type="text/javascript">
+		
+		function forward(){
+			
+			setInterval(function(){
+
+				var r = document.getElementById("ret"); 
+
+				let value = parseInt(r.innerHTML); 
+				if (!isNaN(value)) {
+    			
+    			value +=1;
+
+    			r.innerHTML = value;
+
+ 				}
+
+			},1000)
+
+		}
+
+		function convert(){
+			
+			var d = document.getElementById("date");
+			var t = document.getElementById("time");
+			var ret = document.getElementById("ret");
+
+			console.log(d.value);
+			console.log(t.value);
+
+			var data = {date: d.value , time: t.value};
+
+		 	var myInit =  {
+     		method: "POST",
+     		body: JSON.stringify(data),
+     		headers: {
+       		'Content-Type': 'application/json'
+     		}
+   		};
+
+   		var request = new Request("/to",myInit);
+   		// console.log(parseInt(response.value,10))
+   		fetch(request)
+			.then((response) => response.json())
+			.then((response) => ret.innerHTML = parseInt(response.value,10))
+		}
+
+	</script>
+</head>
+<body onload="forward()">
+	
+	<form id="form" method="POST">
+		<label for="date">Date:</label>
+		<input type="date" id="date" name="date"
+       min="1900-01-01" max="2021-12-31" required>
+
+    <label for="time">Time:</label>
+    <input type="time" id="time" name="time" required>
+		
+		<input type="button"  value="Age in seconds" onclick="convert('^')">
+	</form>
+	<div id="ret"></div>
+
+</body>
+</html>

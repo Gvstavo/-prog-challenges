@@ -1,0 +1,13 @@
+[package]
+name = "_03"
+version = "0.1.0"
+authors = ["Gvstavo <gustavopaivads@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+actix-files = "0.5.0"
+actix-web = "3.3.2"
+chrono = "0.4.19"
+serde = "1.0.125"
