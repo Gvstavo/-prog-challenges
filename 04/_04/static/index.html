@@ -74,6 +74,33 @@
 				ret.innerHTML = response.text
 			 )	
 	}
+
+		function _decrypt(){
+
+			let k = document.getElementById("decrypt_key");
+			let encrypted_text =  document.getElementById("encrypted_text");
+			let ret = document.getElementById("decrypt");
+
+			let data = {encrypted_text: encrypted_text.value, private_key: k.value};
+
+		 	let myInit =  {
+     		method: "POST",
+     		body: JSON.stringify(data),
+     		headers: {
+       		'Content-Type': 'application/json'
+     		}
+   		};
+
+			let request = new Request("/private_decrypt",myInit);
+
+			fetch(request)
+			.then((response) => response.json())
+			.then((response) =>
+				ret.innerHTML = response.text
+			 )	
+	}
+
+
 	</script>
 </head>
 <body>
@@ -124,6 +151,24 @@
 		</form>
 	</div>
 
+	<br><br>
+		<div>
+		<form>
+			<label for="decrypt_key">Private Key</label>
+			<br>
+			<textarea id="decrypt_key" placeholder="Put public key here" required></textarea>
+			<br><br>
+			<label for="encrypted_text">Encrypted text</label>
+			<br>
+			<textarea id="encrypted_text" placeholder="Put text here" required></textarea>
+			<br><br>
+			<label for="decrypt">Resultado</label>
+			<br>
+			<textarea  name= "decrypt" id= "decrypt" placeholder="Encrypt result" readonly></textarea>
+			<br><br>
+			<input type="button"  value="Decrypt" onclick="_decrypt()">
+		</form>
+	</div>
 
 </body>
 </html>
