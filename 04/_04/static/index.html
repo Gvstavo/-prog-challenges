@@ -2,14 +2,34 @@
 <html>
 <head>
 	<title>Simple RSA decrypt/encrypt</title>
+	<meta charset="utf-8">
 	<script type="text/javascript">
 		
+		function copy_public_key() {
+		  let copyText = document.getElementById("public_key");
+		  copyText.select();
+		  copyText.setSelectionRange(0, 99999);
+		  document.execCommand("copy");
+		}
+
+		function copy_private_key() {
+		  let copyText = document.getElementById("private_key");
+		  copyText.select();
+		  copyText.setSelectionRange(0, 99999);
+		  document.execCommand("copy");
+		}
+
+
 		function generator(){
 
-			var d = document.getElementById("bits");
-			var data = {n: parseInt(d.value)};
+			let d = document.getElementById("bits");
+			let public_key = document.getElementById("public_key");
+			let private_key = document.getElementById("private_key");
 
-		 	var myInit =  {
+
+			let data = {n: parseInt(d.value)};
+
+		 	let myInit =  {
      		method: "POST",
      		body: JSON.stringify(data),
      		headers: {
@@ -17,13 +37,43 @@
      		}
    		};
 
-   		var request = new Request("/keys",myInit);
+   		let x = function(keys) {
+   			public_key.innerHTML = keys.public_key;
+   			private_key.innerHTML = keys.private_key
+   		}
+   		let request = new Request("/keys",myInit);
 
    		 fetch(request)
 			.then((response) => response.json())
-			.then((response) => console.log(response))
+			.then((response) =>
+				x(response)
+			 )
 		}
 
+		function _encrypt(){
+
+			let k = document.getElementById("encrypt_key");
+			let plain_text =  document.getElementById("plain_text");
+			let ret = document.getElementById("encrypt");
+
+			let data = {plain_text: plain_text.value, public_key: k.value};
+
+		 	let myInit =  {
+     		method: "POST",
+     		body: JSON.stringify(data),
+     		headers: {
+       		'Content-Type': 'application/json'
+     		}
+   		};
+
+			let request = new Request("/public_encrypt",myInit);
+
+			fetch(request)
+			.then((response) => response.json())
+			.then((response) =>
+				ret.innerHTML = response.text
+			 )	
+	}
 	</script>
 </head>
 <body>
@@ -37,20 +87,41 @@
 				<option value="4096">4096</option>
 			</select>
 			<br><br>
-			<input type="button"  value="Generate key pair" onclick="generator('^')">
+			<input type="button"  value="Generate key pair" onclick="generator()">
 		</form>
 	</div>
 	<div>
 		<h3>Public Key</h3>
-		<textarea  name="public_key" id="public_key" readonly>
-			
-		</textarea>
+		<textarea  name="public_key" id="public_key" readonly>	</textarea><br><br>
+		<button onclick="copy_public_key()">Copy to clipboard</button>
+
 	</div>
 	<div>
 		<h3>Private Key</h3>
-		<textarea  name="private_key" id="private_key" readonly>
-			
-		</textarea>
+		<textarea  name="private_key" id="private_key" readonly></textarea>
+		<br><br>
+		<button onclick="copy_private_key()">Copy to clipboard</button>
+	</div>
+
+	<br>
+	<br>
+	<h3>Encrypt/Decrypt</h3>
+	<div>
+		<form>
+			<label for="encrypt_key">Public Key</label>
+			<br>
+			<textarea id="encrypt_key" placeholder="Put public key here" required></textarea>
+			<br><br>
+			<label for="plain_text">Plain text</label>
+			<br>
+			<textarea id="plain_text" placeholder="Put text here" required></textarea>
+			<br><br>
+			<label for="encrypt">Resultado</label>
+			<br>
+			<textarea  name= "encrypt" id= "encrypt" placeholder="Encrypt result" readonly></textarea>
+			<br><br>
+			<input type="button"  value="Encrypt" onclick="_encrypt()">
+		</form>
 	</div>
 
 
