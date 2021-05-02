@@ -1,9 +1,58 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<title>Simple RSA decrypt/encrypt</title>
+	<script type="text/javascript">
+		
+		function generator(){
+
+			var d = document.getElementById("bits");
+			var data = {n: parseInt(d.value)};
+
+		 	var myInit =  {
+     		method: "POST",
+     		body: JSON.stringify(data),
+     		headers: {
+       		'Content-Type': 'application/json'
+     		}
+   		};
+
+   		var request = new Request("/keys",myInit);
+
+   		 fetch(request)
+			.then((response) => response.json())
+			.then((response) => console.log(response))
+		}
+
+	</script>
 </head>
 <body>
-	aux//
+	<div>
+		<form>
+			<select name="bits" id="bits">
+				<option value="515">515</option>
+				<option value="1024">1024</option>
+				<option value="2048">2048</option>
+				<option value="3076">3076</option>
+				<option value="4096">4096</option>
+			</select>
+			<br><br>
+			<input type="button"  value="Generate key pair" onclick="generator('^')">
+		</form>
+	</div>
+	<div>
+		<h3>Public Key</h3>
+		<textarea  name="public_key" id="public_key" readonly>
+			
+		</textarea>
+	</div>
+	<div>
+		<h3>Private Key</h3>
+		<textarea  name="private_key" id="private_key" readonly>
+			
+		</textarea>
+	</div>
+
+
 </body>
 </html>
